@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click to make Circle</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f7f7f7;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-family: Helvetica, sans-serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #333;
+      margin-bottom: 150px;
+    }
+
+    .shape {
+      width: 300px;
+      height: 300px;
+      transition: all 1s ease;
+    }
+
+    /* 커서 대신 표시할 원 */
+    .custom-cursor {
+      width: 20px;
+      height: 20px;
+      background-color: #fcba03;
+      border-radius: 50%;
+      position: absolute;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s ease;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Click to make Circle</h1>
+  <div class="shape" id="shape"></div>
+  <div class="custom-cursor" id="customCursor"></div> 
+
+  <script>
+    let sides = 3; // 삼각형부터 시작!!!!
+    const shape = document.getElementById("shape");
+    const customCursor = document.getElementById("customCursor");
+
+    const colors = [
+      "skyblue",    // 삼각형
+      "coral",      // 사각형
+      "lightgreen", // 오각형
+      "#fff2a8",       // 육각형
+      "lightpink",  // 칠각형
+      "#4dfcff",     // 팔각형
+      "lightgray",  // 구각형
+      "#7db8f0",   // 십각형
+      "mediumseagreen", // 십일각형
+      "tomato",     // 십이각형
+      "#fcba03" // 원
+    ];
+
+    function generatePolygon(sides) {
+      const angleOffset = -Math.PI / 2;
+      const angle = 2 * Math.PI / sides;
+      const points = [];
+
+      for (let i = 0; i < sides; i++) {
+        const x = 50 + 50 * Math.cos(i * angle + angleOffset);
+        const y = 50 + 50 * Math.sin(i * angle + angleOffset);
+        points.push(`${x}% ${y}%`);
+      }
+
+      return `polygon(${points.join(", ")})`;
+    }
+
+    // 페이지 로드 시 초기 삼각형 설정 따봉 gpt야 고마워
+    document.addEventListener("DOMContentLoaded", function() {
+      shape.style.clipPath = generatePolygon(sides); // 삼각형 적용
+      shape.style.backgroundColor = colors[sides - 3]; // 초기 색상 설정
+    });
+
+    // 클릭 시 도형 변경
+    shape.addEventListener("click", function() {
+      if (sides < 12) {
+        sides++;
+        shape.style.clipPath = generatePolygon(sides);
+        shape.style.backgroundColor = colors[sides - 3];
+      } else if (sides === 12) {
+        shape.style.clipPath = "circle(50% at 50% 50%)"; // 마지막에 원
+        shape.style.backgroundColor = colors[10];
+        sides++;
+      } else {
+        sides = 3; // 다시 삼각형으로 초기화
+        shape.style.clipPath = generatePolygon(sides); // 삼각형 적용
+        shape.style.backgroundColor = colors[0];
+      }
+    });
+
+
+
+//마우스 관련
+
+    // 마우스 이동에 따라 원 커서 이동
+    document.addEventListener("mousemove", function(e) {
+      customCursor.style.left = `${e.pageX}px`;
+      customCursor.style.top = `${e.pageY}px`;
+    });
+
+    // 도형 위에 마우스 호버시, 커서 none 원 보임
+    shape.addEventListener("mouseenter", function() {
+      customCursor.style.display = "block";
+      document.body.style.cursor = "none"; // 기본 커서 숨김
+    });
+
+    // 도형에서 마우스가 미호버시, 원 안보임 커서 표시
+    shape.addEventListener("mouseleave", function() {
+      customCursor.style.display = "none";
+      document.body.style.cursor = "default";
+    });
+  </script>
+
+</body>
+</html>
