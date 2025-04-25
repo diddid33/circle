@@ -1,132 +1,1421 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Click to make Circle</title>
-  <style>
-    body {
+  <meta charset="UTF-8" />
+  <title>ABC Primer</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<style>
+    /* Light */
+    @charset "utf-8";
+
+    @font-face {
+      font-family: "GmarketSans";
+      font-weight: 300;
+      src: url(GmarketSansLight.woff2) format(woff);
+    }
+    @font-face {
+      font-family: "GmarketSans";
+      font-weight: 500;
+      src: url(GmarketSansMedium.woff2) format(woff);
+    }
+    @font-face {
+      font-family: "GmarketSans";
+      font-weight: 700;
+      src: url(GmarketSansBold.woff2) format(woff);
+    }
+
+
+    @font-face {
+      font-family: 'NexonGothicBold';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON%20Lv1%20Gothic%20OTF.woff') format('woff');
+      font-weight: 700;
+    }
+
+    html {
+      cursor: url('./C.png') 0 0, auto;
+
+        }			    
+        
+      body {
       display: flex;
-      flex-direction: column;
+			flex-direction: column;
+      background-color: #DCF0FA;
+      width: 100%;
+      height: 100%;
+      min-width: 360px;
+      overflow: hidden auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: auto;
+			padding: 0;
+			margin: 0;
+        }			
+
+    .title {
+			font-family: 'GmarketSans';
+      font-weight:700;
+      color: #232b2c;
+      font-size: 80px;
+      white-space: nowrap;
+      position:fixed; top:55px; left:60px;
+      cursor: url('./P.png') 0 0, auto;
+        }
+
+    * {margin: 0;padding: 0; box-sizing: border-box;}
+
+    .ABCPrimerWrapper {
+      position: relative;
+    }
+
+    .ABCPrimer {
+      font-family: 'GmarketSans';
+      font-weight: 500;
+      border: 1px solid #02131c;
+      background-color: #FFFECA;
+      position: fixed;
+      top: 60px;
+      right: 60px;
+      padding: 10px 15px;
+      z-index: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      cursor: url('./O.png') 0 0, auto;
+    }
+
+    .ABCPrimer.active {
+      background-color: #DCF0FA; /* 예시 색상 */
+    }
+
+    .ABCOverlay {
+      position: fixed;top: 0;left: 0;width: 100vw;height: 100vh;
+      height: 100%;
+      width: 100%;
+      background-color: #FFFECA;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      cursor: url('./O.png') 6 6, auto;
+    }
+
+    .ABCOverlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ABCOverlay img {
+      padding: 60px;
+      height: 100vh;
+      width: auto;
+      object-fit:contain;
+        }
+
+    .wrapper {
+      position: absolute; bottom:60px;
+      display: flex;
+      width: 100%;
+      height: 550px;
+      scroll-behavior:smooth;
+      overflow: hidden auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
+    }
+
+    .section {
+      bottom: 0px;
+			font-family: 'GmarketSans';
+      font-weight: lighter;
+      display: flex; flex-direction: column;
+      width: 400px; height: 550px;
+      flex-shrink: 0;
+      justify-content: start;
+      align-items: center;
+      border-right:1px solid #000D13;
+      border-top:1px solid #000D13;
+      background-color: #DCF0FA
+    }
+
+    .section-header {
+      padding: 15px;
+      border-bottom:1px solid #000D13;
+      width: 400px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .section-alphabet {
+      font-family: 'GmarketSans';
+      font-weight: 500;
+      font-size: 18px;
+      border: 1px solid #000D13;
+      border-radius: 50%;
+      background: #ffffff;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .section-title {
+      font-family: 'NexonGothicBold';
+      font-size: 18px;
+      color: #e40000;
+      -webkit-text-stroke: 0.8px #e40000;
+      font-weight:700;
+    }
+
+    .section-content {
+      flex: 1;
+      display:flex;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background-color: #f7f7f7;
+      text-align: center;
+      width: 100%;
+      padding: 15px;
+      height: 450px;
+      position: relative;
       overflow: hidden;
     }
 
-    h1 {
-      font-family: Helvetica, sans-serif;
-      font-size: 1.5rem;
-      font-weight: 300;
+    .section-description {
+      width: 100%;
+      padding: 15px 15px;
+			font-family: 'GmarketSans';
+      font-size: 18px;
+      font-weight:300;
       color: #333;
-      margin-bottom: 150px;
+      text-align: left;
+      line-height: 1.6;
     }
 
-    .shape {
-      width: 300px;
-      height: 300px;
-      transition: all 1s ease;
+    .nav {
+      position: fixed; bottom: 0px;
+      z-index: 100;
+      border-top: 1px solid #000D13;
+			background-color: #ffffff;
+      display: flex;
+      width: 100%;
+      cursor: url('./A.png') 6 6, auto;
     }
 
-    /* 커서 대신 표시할 원 */
-    .custom-cursor {
-      width: 20px;
-      height: 20px;
-      background-color: #fcba03;
-      border-radius: 50%;
-      position: absolute;
+    /* HOW 버튼 */
+    .howBtn {
+      font-family: 'GmarketSans';
+      padding: 20px;
+      z-index: 100;
+      border-right: 1px solid #000D13;
+			background-color: #ECFFDC;
+      display: flex;
+      justify-content: space-between; 
+      margin: 0 auto;
+		  clear: both;
+  		text-align: center;
+      color: rgb(0, 0, 0);
+      text-decoration: none;
+      font-family: 'GmarketSansMedium';
+      font-size: 20px;
+      cursor: url('./Z.png') 6 6, auto;
+
+    }
+    .howBtn:hover {
+      color: #e40000;
+      font-weight:700;
+    }
+    /* 팝업 기본 스타일 */
+    .howPopup {
+      cursor: url('./Z.png') 6 6, auto;
+      font-family: 'GmarketSans';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3); /* 뒷배경 어둡게 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
       pointer-events: none;
-      transform: translate(-50%, -50%);
-      transition: transform 0.1s ease;
-      display: none;
+      transition: 0.3s;
+      z-index: 999;
     }
+
+    .howPopup.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* 팝업 박스 */
+    .howPopupBox {
+      width: 400px;
+      background-color: #e9f6d4;
+      padding: 30px;
+      border: 1px solid #000;
+      font-family: 'GmarketSans';
+    }
+
+    /* 헤더 */
+    .howPopupHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight:500;
+      font-size: 1rem;
+      color: #111;
+      margin-bottom: 20px;
+    }
+
+    /* 닫기 버튼 */
+    .closePopup {
+      cursor: pointer;
+      font-size: 2rem;
+    }
+
+    /* 본문 텍스트 */
+    .howPopupBody p {
+      font-weight: 300;
+      font-size: 18px;
+      color: #222;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .howPopupBody .bold {
+      font-weight: 500;
+      color: #1d2b00;
+    }
+
+    .nav .links {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 auto;
+		  clear: both;
+  		text-align: center;
+      justify-content: space-between; 
+  		padding: 20px;
+      width: 100%;
+      flex-wrap: nowrap;
+      gap: 8px;
+      cursor: url('./A.png') 6 6, auto;
+      }
+
+    .nav a {
+      color: #000D13;
+      text-decoration: none;
+      margin-right: 8px;
+      font-family: 'GmarketSansMedium';
+      font-size: 20px;
+    }
+
+    .nav a:hover {
+      color: #e40000;
+      font-weight:700;
+    }
+
+    /* 버튼관련 */
+    .circle-btn {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: none;
+      background-color: #e40000;
+      color: white;
+      font-size: 18px;
+      font-family: 'GmarketSans';
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.05s;
+    }
+    .circle-btn:active {
+      transform: scale(0.95);
+    }
+    /* 커서관련 */
+    #randomCursorDiv {
+      flex: 1;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      padding: 15px;
+      height: 450px;
+        }
+
+      /* 셀렉트관련 */
+        .custom-select {
+      padding: 16px 40px 16px 20px;
+      font-family: 'helvetica';
+      font-size: 25px;
+      font-weight: 500;
+      border: 1px solid #2e2d2d;
+      border-radius: 8px;
+      background-color: #ffffff;
+      color: #333;
+      cursor: pointer;
+      /* 화살표 설정 */
+      appearance: none; /* 기본 브라우저 스타일 제거 */
+      -webkit-appearance: none;
+      -moz-appearance: none;
+
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23333'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      background-size: 12px;
+    }
+
+    .custom-select:focus {
+      border: 2px solid #1f60e2;
+      outline: none;
+      background-color: #fff;
+    }
+
+    
+    .em{
+      font-family:Georgia, 'Times New Roman', Times, serif;
+      font-size: 150px;
+      color: #042d7f;
+      font-weight:500;
+      line-height: 2;
+    }
+
+    .custom-details summary {
+      font-family: Helvetica, sans-serif;
+      font-size: 30px;
+      font-weight: 400;
+      line-height: 1.3;
+      list-style: none;
+      white-space: pre-line;
+      
+      cursor: pointer;
+      position: relative;
+      padding-left: 0.5em;
+    }
+
+    /*호버*/
+    img {
+      width: 180px;
+      height: auto;
+      cursor: pointer;
+    }
+    .bubble {
+      position: absolute;
+      top: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      font-size: 25px;
+      white-space: nowrap;
+    }
+    /*인풋*/
+    .range {
+      display:inline;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      gap: 5px; 
+      margin-top: 130px;
+      width: 100%;
+      padding: 15px;
+      height: 100vh;  
+      font-family: Helvetica, sans-serif;
+      font-weight:500;
+      font-size: 20px;
+    }
+
+    #moodRange {
+      width: 80%;
+    }
+    .emoji {
+      font-size: 48px;
+      transition: 0.3s ease;
+    }
+
+    /*그리드*/
+    .grid-container {
+      width: 100%;
+      height: 60%; 
+      display: grid;
+      justify-content: center;
+      grid-template-columns: repeat(3, 60px);
+      grid-template-rows: repeat(3, 60px);
+      gap: 10px;
+    }
+
+    .grid-item {
+      background-color: #ffffff;
+      border: 1px solid #000D13;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 300;
+      font-size: 1rem;
+    }
+
+    /*j쿼리*/
+  .confetti {
+    position: absolute;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    opacity: 0.8;
+    animation: fall 3s linear infinite;
+    z-index: 9999;
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+    /*키프레임*/
+  .animate-box {
+      width: 150px;
+      height: 150px;
+      background-color: #4CAF50;
+      border-radius: 75px;
+      margin: 50px;
+      animation: changeColorAndSize 3s infinite;
+    }
+
+    @keyframes changeColorAndSize {
+      0% {
+        background-color: #4CAF50;
+        transform: scale(1);
+      }
+      50% {
+        background-color: #FFC107;
+        transform: scale(1.2);
+      }
+      100% {
+        background-color: #2196F3;
+        transform: scale(1);
+      }
+    }
+
+    
+    /*리스트*/
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 50px;
+      font-weight: 500;
+      font-family: helvetica;
+    }
+
+    li {
+      background-color: #ffffff;
+      padding: 10px 20px;
+      margin-bottom: 10px;
+      border: 1px solid #000D13;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    li:hover {
+      background-color: #a4d4ff;
+      transform: translateX(10px);
+    }
+
+    mark {
+      background-color: #F6F856;
+      padding: 2px 4px;
+      font-weight: 500;
+    }
+    #countInputBox {
+    width: 180px;
+    padding: 12px 16px;
+    font-size: 28px;
+    font-weight: 500;
+    color: #202425;
+    background-color: #ffffff;
+    border: 1px solid #000D13;
+    outline: none;
+    text-align: center;
+    transition: 0.2s ease;
+    appearance: textfield; /* 화살표 제거 */
+  }
+
+  #countInputBox:focus {
+    border-color: #e40000;
+    background-color: #FFFECA;
+    transform: scale(1.05);
+  }
+
+  #countInputBox::-webkit-inner-spin-button, 
+  #countInputBox::-webkit-outer-spin-button {
+    margin: 0;
+  }
+  .quote{
+    font-family: serif;
+    display: block;
+    font-size: 28px;
+    line-height: 1.6;
+    font-weight: 600;
+    font-style: italic;
+    color: #2f2f2f;
+  }
+
+  .card {
+    font-family: helvetica;
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    font-size: 25px;
+    font-weight: 500;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .blue {
+    background: #619eff;
+    top: 90px;
+    left: 80px;
+    z-index: 1;
+  }
+
+  .green {
+    background: #37d772;
+    top: 200px;
+    left: 140px;
+    z-index: 2;
+  }
+
+  .red {
+    background: #e36969;
+    top: 140px;
+    left: 220px;
+    z-index: 3;
+  }
+
+  /*토글*/
+  .box {
+      width: 100px;
+      height: 100px;
+      background-color: cornflowerblue;
+      transition: all 0.3s ease;
+      margin: 50px auto;
+      cursor: pointer;
+    }
+    .box.large {
+      width: 200px;
+      height: 200px;
+    }
+
+    del {
+      color: gray;
+      text-decoration: line-through;
+    }
+    ins {
+      color: green;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    u {
+      text-decoration: underline;
+    }
+
+
+    .formula-card {
+      background-color: #ffffff;
+      border: 1px solid #000;
+      padding: 20px;
+      width: fit-content;
+      font-family: 'Courier New', monospace;
+      margin: 40px;
+      font-size: 24px;
+    }
+
+    var {
+      font-style: normal;
+      font-weight: bold;
+      color: #3366cc;
+    }
+    
+    .gradient-text {
+      font-size: 50px;
+      font-weight: bold;
+      background: linear-gradient(to right, #a1de67, #f2d73f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    /*x*/
+    x-slider {
+      display: block;
+      width: 300px;
+      height: 200px;
+      overflow: hidden;
+      border: 1px solid #000;
+      position: relative;
+    }
+
+    .slides {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      animation: slide 10s infinite;
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes slide {
+      0%   { transform: translateX(0); }
+      33%  { transform: translateX(-100%); }
+      66%  { transform: translateX(-200%); }
+      100% { transform: translateX(0); }
+    }
+
+    .ball {
+      width: 60px;
+      height: 60px;
+      background-color: #ff6a00;
+      border-radius: 50%;
+      margin: 100px auto;
+      animation: bounceY 1s infinite ease-in-out;
+    }
+
+    @keyframes bounceY {
+      0%, 100% {
+        transform: translateY(100px)scale(1.2, 0.8);
+      }
+      50% {
+        transform: translateY(-200px) scale(0.8, 1.2);
+      }
+    }
+
+    /*커서*/
+    #A {
+  cursor: url('./A.png') 6 6, auto;
+}
+#B {
+  cursor: url('./B.png') 6 6, auto;
+}
+#C {
+  cursor: url('./C.png') 6 6, auto;
+}
+#D {
+  cursor: url('./D.png') 6 6, auto;
+}
+#E {
+  cursor: url('./E.png') 6 6, auto;
+}
+#F {
+  cursor: url('./F.png') 6 6, auto;
+}
+#G {
+  cursor: url('./G.png') 6 6, auto;
+}
+#H {
+  cursor: url('./H.png') 6 6, auto;
+}
+#I {
+  cursor: url('./I.png') 6 6, auto;
+}
+#J {
+  cursor: url('./J.png') 6 6, auto;
+}
+#K {
+  cursor: url('./K.png') 6 6, auto;
+}
+#L {
+  cursor: url('./L.png') 6 6, auto;
+}
+#M {
+  cursor: url('./M.png') 6 6, auto;
+}
+#N {
+  cursor: url('./N.png') 6 6, auto;
+}
+#O {
+  cursor: url('./O.png') 6 6, auto;
+}
+#P {
+  cursor: url('./P.png') 6 6, auto;
+}
+#Q {
+  cursor: url('./Q.png') 6 6, auto;
+}
+#R {
+  cursor: url('./R.png') 6 6, auto;
+}
+#S {
+  cursor: url('./S.png') 6 6, auto;
+}
+#T {
+  cursor: url('./T.png') 6 6, auto;
+}
+#U {
+  cursor: url('./U.png') 6 6, auto;
+}
+#V {
+  cursor: url('./V.png') 6 6, auto;
+}
+#W {
+  cursor: url('./W.png') 6 6, auto;
+}
+#X {
+  cursor: url('./X.png') 6 6, auto;
+}
+#Y {
+  cursor: url('./Y.png') 6 6, auto;
+}
+#Z {
+  cursor: url('./Z.png') 6 6, auto;
+}
+
+
   </style>
 </head>
-<body>
 
-  <h1>Click to make Circle</h1>
-  <div class="shape" id="shape"></div>
-  <div class="custom-cursor" id="customCursor"></div> 
+
+<body>
+  <div class="title">Find Alphabet!</div>
+  <div class="ABCPrimerWrapper">
+    <div class="ABCPrimer">ABC Primer</div>
+    <div class="ABCOverlay">
+      <picture>
+        <!-- 1000px 이상일 경우 -->
+        <source srcset="./primer.png" media="(min-width: 1000px)">
+        <!-- 600px 미만은 기본 이미지 -->
+        <img src="./primer_mid.png" alt="Centered Image" />
+      </picture>    </div>
+  </div>
+
+  <!-- HOW 팝업 -->
+  <div class="howPopup">
+    <div class="howPopupBox">
+      <div class="howPopupHeader">
+        <h2>How</h2>
+        <span class="closePopup">&times;</span>
+      </div>
+      <br>
+      <div class="howPopupBody">
+        <p>이 웹사이트는 HTML의 태그와 쿼리를 알파벳 순서로 정리한 가이드입니다.</p>
+        <p>각 알파벳은 특정 기능을 담고 있으며, 마우스를 올리면 돋보기에 알파벳이 뜹니다.</p>
+        <p>드래그하거나 아래에 있는 네비게이션 바에서 알파벳을 클릭하여 구경할 수 있습니다.</p>
+        <p class="bold">마우스를 움직여 웹사이트 속에 숨겨진 알파벳을 찾아보세요!</p>
+      </div>
+    </div>
+  </div>
+
+    <nav class="nav">  
+      <div class="howBtn">How</div>
+      <div class="links">
+        <a href="#A">A</a>
+        <a href="#B">B</a>
+        <a href="#C">C</a>
+        <a href="#D">D</a>
+        <a href="#E">E</a>
+        <a href="#F">F</a>
+        <a href="#G">G</a>
+        <a href="#H">H</a>
+        <a href="#I">I</a>
+        <a href="#J">J</a>
+        <a href="#K">K</a>
+        <a href="#L">L</a>
+        <a href="#M">M</a>
+        <a href="#N">N</a>
+        <a href="#O">O</a>
+        <a href="#P">P</a>
+        <a href="#Q">Q</a>
+        <a href="#R">R</a>
+        <a href="#S">S</a>
+        <a href="#T">T</a>
+        <a href="#U">U</a>
+        <a href="#V">V</a>
+        <a href="#W">W</a>
+        <a href="#X">X</a>
+        <a href="#Y">Y</a>
+        <a href="#Z">Z</a>
+      </div>
+    </nav>
+
+
+
+  <div class="wrapper" id="wrapper">
+    <div class="section" id="A">
+      <div class="section-header">
+        <div class="section-alphabet">A</div>
+        <div class="section-title">&lt;a&gt;</div>
+      </div>
+      <div class="section-content">
+        <a href="https://www.youtube.com/watch?v=pr0KGE98IXc&t=4s" target="_blank">
+          <img src="anchor.png" alt="Anchor Image" style="width: 60%; height: auto;">
+        </a>
+      </div>
+      <div class="section-description">앵커(Anchor) 태그로, 링크를 생성한다. <br>닻을 클릭하여, 웹을 항해해보자.
+      </div>
+    </div>
+    
+    <div class="section" id="B">
+      <div class="section-header">
+        <div class="section-alphabet">B</div>
+        <div class="section-title">&lt;button&gt;</div>
+      </div>
+      <div class="section-content rainbow">
+          <button class="circle-btn">click</button>
+      </div>
+      <div class="section-description">버튼(Button) 태그로,버튼 요소를 생성한다. <br>클릭하면 무슨 일이 생길까?</div>
+    </div>
+    
+    <div class="section" id="C">
+      <div class="section-header">
+        <div class="section-alphabet">C</div>
+        <div class="section-title">cursor</div>
+      </div>
+      <div id="randomCursorDiv">          
+        <img src="cursor.png" alt="Cursor Image" style="max-width: 25%; height: auto;">
+      </div>
+      <div class="section-description">마우스 커서 속성을 바꾸어 모양을 변경한다. <br>어떤 모양이 나올까,,,</div>
+    </div>
+    
+    <div class="section" id="D">
+      <div class="section-header">
+        <div class="section-alphabet">D</div>
+        <div class="section-title">details</div>
+      </div>
+      <div class="section-content">
+        <details class="custom-details">
+          <summary>내가 정말로 <br>하고 싶었던 말은...더보기</summary>
+          <img src="mr.jpg" style="max-width: 80%; margin-top: 10px;" />
+        </details>
+      </div>
+      <div class="section-description">사용자가 펼치거나 닫을 수 있는 추가 세부정보를 포함시킨다.</div>
+    </div>
+    
+    <div class="section" id="E">
+      <div class="section-header">
+        <div class="section-alphabet">E</div>
+        <div class="section-title">&lt;em&gt;</div>
+      </div>
+      <div class="section-content">
+        <p class="em">
+          <em>"E"</em>
+        </p>      
+      </div>
+      <div class="section-description">"강조(emphasis)"할 때 쓰는 HTML 태그로, 텍스트를 기울인다.</div>
+    </div>
+    
+    <div class="section" id="F">
+      <div class="section-header">
+        <div class="section-alphabet">F</div>
+        <div class="section-title">&lt;figure&gt;</div>
+      </div>
+      <div class="section-content">
+        <figure style="text-align: center; max-width: 400px; margin: 2rem auto;">
+          <img src="flower.png" alt="노오란 꽃" style="width: 60%;" />
+          <figcaption style="margin-top: 0.5rem; font-size: 13px; font-style: italic; color: gray;">
+            꽃은 지기에 아름답다
+          </figcaption>
+        </figure>
+      </div>
+      <div class="section-description">이미지(또는 기타 콘텐츠)를 포함하는 컨테이너 태그이다. &lt;figcation&gt; 함께 사용된다.</div>
+    </div>
+    
+    <div class="section" id="G">
+      <div class="section-header">
+        <div class="section-alphabet">G</div>
+        <div class="section-title">grid</div>
+      </div>
+      <div class="section-content">
+        <div class="grid-container">
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+        </div>
+      </div>
+      <div class="section-description">CSS Grid 레이아웃을 활용할 때 사용한다. display: grid;로 사용할 수 있다.</div>
+    </div>
+    
+    <div class="section" id="H">
+      <div class="section-header">
+        <div class="section-alphabet">H</div>
+        <div class="section-title">hover</div>
+      </div>
+      <div class="section-content">
+        <img src="hmm.png" id="hover-image">
+        <div class="bubble">💡</div>
+      </div>
+      <div class="section-description">마우스를 올리면, 스타일을 변경하거나 특정 효과를 낸다.</div>
+    </div>
+    
+    <div class="section" id="I">
+      <div class="section-header">
+        <div class="section-alphabet">I</div>
+        <div class="section-title">&lt;input type=”range”&gt;</div>
+      </div>
+      <div class="range">
+        <div class="emoji" id="face">😐</div>
+        <input type="range" min="0" max="100" value="50" id="moodRange">
+        <div class="label" id="moodLabel">그냥 그래요</div>
+      </div>
+      <div class="section-description">값 조정이 가능한 슬라이더 바를 만들 수 있다.</div>
+    </div>
+    
+    <div class="section" id="J">
+      <div class="section-header">
+        <div class="section-alphabet">J</div>
+        <div class="section-title">jQuery</div>
+      </div>
+      <div class="section-content" id="j-content">
+      </div>
+      <div class="section-description">html 조작 쉽게 바꿔주는 라이브러리입니다.</div>
+    </div>
+    
+    <div class="section" id="K">
+      <div class="section-header">
+        <div class="section-alphabet">K</div>
+        <div class="section-title">keyframes</div>
+      </div>
+      <div class="section-content">
+        <div class="animate-box"></div>
+      </div>
+      <div class="section-description">CSS 애니메이션을 정의하는 규칙으로, 스타일이 시간에 따라 어떻게 변할 지를 지정합니다.</div>
+    </div>
+    
+    <div class="section" id="L">
+      <div class="section-header">
+        <div class="section-alphabet">L</div>
+        <div class="section-title">&lt;li&gt;</div>
+      </div>
+      <div class="section-content">
+          <ul>
+            <li>🍋 레몬</li>
+            <li>🍊 오렌지</li>
+            <li>🍎 사과</li>
+            <li>🍇 포도</li>
+          </ul>
+      </div>
+      <div class="section-description">&lt;li&gt; 태그는 목록(&lt;ul&gt; 또는 &lt;ol&gt;) 안에서 각 항목(item)을 나타내는 태그입니다.</div>
+    </div>
+    
+    <div class="section" id="M">
+      <div class="section-header">
+        <div class="section-alphabet">M</div>
+        <div class="section-title">&lt;mark&gt;</div>
+      </div>
+      <div class="section-content">
+        <img src="highlight.png" alt="highlightpen Image" style="width: 65%; height: auto;">
+      </div>
+      <div class="section-description">형광펜 효과로 <mark>텍스트를 강조하며</mark>, CSS로 배경색·테두리·모서리 등을 조절할 수 있습니다.</div>
+    </div>
+    
+    <div class="section" id="N">
+      <div class="section-header">
+        <div class="section-alphabet">N</div>
+        <div class="section-title">&lt;input type="number"&gt;</div>
+      </div>
+      <div class="section-content">
+        
+        <input type="number" id="countInputBox" />
+
+      </div>
+      <div class="section-description">숫자 입력 필드로, 사용자가 숫자를 입력하거나 ↑↓ 버튼으로 값을 조절할 수 있습니다.</div>
+    </div>
+    
+    <div class="section" id="O">
+      <div class="section-header">
+        <div class="section-alphabet">O</div>
+        <div class="section-title">oppacity</div>
+      </div>
+      <div class="section-content">
+        <div style="width:150px; height:150px; background:#e40000; opacity:0.3;"></div>
+        <div style="position: absolute; top: 70px; left: 70px; width:150px; height:150px; background:#e40000; opacity:0.3;"></div>
+        <div style="position: absolute; bottom: 70px; right: 70px; width:150px; height:150px; background:#e40000; opacity:0.3;"></div>
+      </div>
+      <div class="section-description">투명도를 조절하는 CSS 속성으로,0은 완전 투명, 1은 완전 불투명을 의미한다.</div>
+    </div>
+    
+    <div class="section" id="P">
+      <div class="section-header">
+        <div class="section-alphabet">P</div>
+        <div class="section-title">position</div>
+      </div>
+      <div class="section-content">
+        <div style="position: relative; display: inline-block;">
+          <button style="width: 100px; height: 100px; border-radius: 50%; background-color: #8ab5ff; color: white; font-size: 40px; border: none;">🔔</button>
+          <div style="position: absolute; top: -5px; right: -5px; width: 30px; height: 30px; background: #ee0d0d; color: white; font-size: 18px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: 400;">
+            3
+          </div>
+        </div>
+        
+      </div>
+      <div class="section-description">요소의 위치를 지정하는 CSS 속성이다.</div>
+    </div>
+    
+    <div class="section" id="Q">
+      <div class="section-header">
+        <div class="section-alphabet">Q</div>
+        <div class="section-title">&lt;q&gt;</div>
+      </div>
+      <div class="section-content">
+        <q class="quote">이렇게 적으면    <br>격언같아 보인다.</q>
+      </div>
+      <div class="section-description">인라인 짧은 인용구를 나타낸다. 자동으로 작은 따옴표(“ ”)가 추가된다.</div>
+    </div>
+    
+    <div class="section" id="R">
+      <div class="section-header">
+        <div class="section-alphabet">R</div>
+        <div class="section-title">resize</div>
+      </div>
+      <div class="section-content">
+        <textarea style="resize: both; overflow: auto; width: 200px; height: 100px;">드래그해서 크기 조절해보세요!
+          </textarea>
+      </div>
+      <div class="section-description">window.resize 이벤트는 브라우저 창 크기(Window Size)가 변경될 때 발생한다.</div>
+    </div>
+    
+    <div class="section" id="S">
+      <div class="section-header">
+        <div class="section-alphabet">S</div>
+        <div class="section-title">&lt;select&gt;</div>
+      </div>
+      <div class="section-content">
+        <select class="custom-select">
+          <option>어느</option>
+          <option>것을</option>
+          <option>고를</option>
+          <option>까요</option>
+          <option>알아</option>
+          <option>맞춰</option>
+          <option>보세요</option>
+        </select>
+      </div>
+      <div class="section-description">셀렉트(Select) 태그로, 드롭다운 메뉴를 만들 때 사용한다.</div>
+    </div>
+    
+    <div class="section" id="T">
+      <div class="section-header">
+        <div class="section-alphabet">T</div>
+        <div class="section-title">toggleSize()</div>
+      </div>
+      <div class="section-content">
+        <div class="box" onclick="toggleSize(this)"></div>
+      </div>
+      <div class="section-description">UI 요소의 크기를 토글(변경)하는 함수이다.</div>
+    </div>
+    
+    <div class="section" id="U">
+      <div class="section-header">
+        <div class="section-alphabet">U</div>
+        <div class="section-title">&lt;ul&gt;</div>
+      </div>
+      <div class="section-content">
+        <p style="font-family: helvetica; font-size: 20px; font-weight: 300;">
+          오늘 아침엔 <del><u>커피</u></del> 대신 <ins><u>녹차</u></ins>를 마셨다.
+        </p>
+      </div>
+      <div class="section-description">밑줄을 그어 특별한 의미나 교정, 관습적인 표기를 강조할 때 사용하는 HTML 태그이다.</div>
+    </div>
+    
+    <div class="section" id="V">
+      <div class="section-header">
+        <div class="section-alphabet">V</div>
+        <div class="section-title">&lt;var&gt;</div>
+      </div>
+      <div class="section-content">
+        <div class="formula-card">
+          <var>F</var> = <var>m</var> × <var>a</var>
+        </div>
+      </div>
+      <div class="section-description">수학식, 프로그래밍 코드, 변수 이름 등에서 'variable'를 나타낼 때 사용하는 태그이다.</div>
+    </div>
+    
+    <div class="section" id="W">
+      <div class="section-header">
+        <div class="section-alphabet">W</div>
+        <div class="section-title">webkit-mask-image</div>
+      </div>
+      <div class="section-content">
+        <div class="gradient-text">✨ Gradient ✨</div>
+      </div>
+      <div class="section-description">텍스트에 배경 그라데이션이 들어간 것처럼 보이게 한다.</div>
+    </div>
+    
+    <div class="section" id="X">
+      <div class="section-header">
+        <div class="section-alphabet">X</div>
+        <div class="section-title">&lt;x-slider&gt;</div>
+      </div>
+      <div class="section-content">
+        <x-slider>
+          <div class="slides">
+            <div class="slide"><img src="1.jpg" alt="Slide 1"></div>
+            <div class="slide"><img src="2.jpg" alt="Slide 2"></div>
+            <div class="slide"><img src="3.jpg" alt="Slide 3"></div>
+          </div>
+        </x-slider>      
+      </div>
+      <div class="section-description"> 개발자가 직접 만든 커스텀 HTML 요소로, 슬라이더처럼 콘텐츠를 표시하기 위해 사용된다.</div>
+    </div>
+    
+    <div class="section" id="Y">
+      <div class="section-header">
+        <div class="section-alphabet">Y</div>
+        <div class="section-title">Y-axis</div>
+      </div>
+      <div class="section-content">
+        <div class="ball"></div>
+      </div>
+      <div class="section-description">transform, translateY, scrollY 등에서 Y축(세로 방향)을 조작할 때 사용한다.</div>
+    </div>
+    
+    <div class="section" id="Z">
+      <div class="section-header">
+        <div class="section-alphabet">Z</div>
+        <div class="section-title">z-index</div>
+      </div>
+      <div class="section-content">
+        <div class="card blue">1</div>
+        <div class="card green">2</div>
+        <div class="card red">3</div>
+      </div>
+      <div class="section-description">요소가 앞으로 오거나 뒤로 가도록 조정하는 속성이다. 무엇의 z값이 가장 큰가?</div>
+    </div>
+    
+  </div>
+
 
   <script>
-    let sides = 3; // 삼각형부터 시작!!!!
-    const shape = document.getElementById("shape");
-    const customCursor = document.getElementById("customCursor");
+    // 마우스로 수평 스크롤 가능하게
+        const wrapper = document.getElementById('wrapper');
+    wrapper.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      wrapper.scrollLeft += e.deltaY*30;
+    }, { passive: false });
 
-    const colors = [
-      "skyblue",    // 삼각형
-      "coral",      // 사각형
-      "lightgreen", // 오각형
-      "#fff2a8",       // 육각형
-      "lightpink",  // 칠각형
-      "#4dfcff",     // 팔각형
-      "lightgray",  // 구각형
-      "#7db8f0",   // 십각형
-      "mediumseagreen", // 십일각형
-      "tomato",     // 십이각형
-      "#fcba03" // 원
+    // 네비게이션 클릭 시 해당 이동
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        const id = this.getAttribute('href').substring(1);
+        const target = document.getElementById(id);
+        target.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+      });
+    });
+
+    //버튼관련
+    const button = document.querySelector(".circle-btn");
+    const colors = ["#e40000", "#27ae60", "#e81e76", "#3172e0", "#f5c422", "#8c0ac4"];
+    let colorIndex = 0;
+
+    button.addEventListener("click", () => {
+      colorIndex = (colorIndex + 1) % colors.length;
+      button.style.backgroundColor = colors[colorIndex];
+    });
+
+    //커서관련
+    const cursorStyles = [
+        "pointer", "crosshair", "move", "grab", "not-allowed", "help", "wait", "progress", "cell", "zoom-in"
     ];
+    
+    const targetDiv = document.getElementById("randomCursorDiv");
 
-    function generatePolygon(sides) {
-      const angleOffset = -Math.PI / 2;
-      const angle = 2 * Math.PI / sides;
-      const points = [];
-
-      for (let i = 0; i < sides; i++) {
-        const x = 50 + 50 * Math.cos(i * angle + angleOffset);
-        const y = 50 + 50 * Math.sin(i * angle + angleOffset);
-        points.push(`${x}% ${y}%`);
-      }
-
-      return `polygon(${points.join(", ")})`;
-    }
-
-    // 페이지 로드 시 초기 삼각형 설정 따봉 gpt야 고마워
-    document.addEventListener("DOMContentLoaded", function() {
-      shape.style.clipPath = generatePolygon(sides); // 삼각형 적용
-      shape.style.backgroundColor = colors[sides - 3]; // 초기 색상 설정
+    targetDiv.addEventListener("mouseenter", () => {
+        const randomCursor = cursorStyles[Math.floor(Math.random() * cursorStyles.length)];
+        targetDiv.style.cursor = randomCursor;
     });
 
-    // 클릭 시 도형 변경
-    shape.addEventListener("click", function() {
-      if (sides < 12) {
-        sides++;
-        shape.style.clipPath = generatePolygon(sides);
-        shape.style.backgroundColor = colors[sides - 3];
-      } else if (sides === 12) {
-        shape.style.clipPath = "circle(50% at 50% 50%)"; // 마지막에 원
-        shape.style.backgroundColor = colors[10];
-        sides++;
+    targetDiv.addEventListener("mouseleave", () => {
+        targetDiv.style.cursor = "default";
+    });
+
+    //abcprimer관련
+    document.addEventListener("DOMContentLoaded", function () {
+      const primer = document.querySelector(".ABCPrimer");
+      const overlay = document.querySelector(".ABCOverlay");
+
+      primer.addEventListener("click", function () {
+        this.classList.toggle("active");
+        overlay.classList.toggle("active");
+      });
+    });
+
+    //how관련
+    document.addEventListener("DOMContentLoaded", function () {
+  const howBtn = document.querySelector(".howBtn");
+  const howPopup = document.querySelector(".howPopup");
+
+  howBtn.addEventListener("click", function () {
+    howPopup.classList.toggle("active");
+  });
+
+  // 팝업 안의 content 클릭하면 닫기 (원하면 제거해도 됨)
+  howPopup.addEventListener("click", function () {
+    howPopup.classList.remove("active");
+  });
+});
+
+  // 인풋
+    const range = document.getElementById('moodRange');
+    const face = document.getElementById('face');
+    const label = document.getElementById('moodLabel');
+
+    range.addEventListener('input', () => {
+      const value = parseInt(range.value);
+
+      if (value < 20) {
+        face.textContent = '😭';
+        label.textContent = '최악이에요';
+      } else if (value < 40) {
+        face.textContent = '😟';
+        label.textContent = '별로예요';
+      } else if (value < 60) {
+        face.textContent = '😐';
+        label.textContent = '그냥 그래요';
+      } else if (value < 80) {
+        face.textContent = '😊';
+        label.textContent = '좋아요!';
       } else {
-        sides = 3; // 다시 삼각형으로 초기화
-        shape.style.clipPath = generatePolygon(sides); // 삼각형 적용
-        shape.style.backgroundColor = colors[0];
+        face.textContent = '🥳';
+        label.textContent = '최고예요!';
       }
     });
 
+    //j쿼리
+    function createConfettiIn($container) {
+    const confetti = $('<div class="confetti"></div>');
+    const containerWidth = $container.width();
+    const left = Math.random() * containerWidth;
+    const color = `hsl(${Math.random() * 360}, 100%, 70%)`;
 
-
-//마우스 관련
-
-    // 마우스 이동에 따라 원 커서 이동
-    document.addEventListener("mousemove", function(e) {
-      customCursor.style.left = `${e.pageX}px`;
-      customCursor.style.top = `${e.pageY}px`;
+    confetti.css({
+      left: left + 'px',
+      top: '0px',
+      backgroundColor: color,
+      animationDuration: (2 + Math.random() * 2) + 's',
     });
 
-    // 도형 위에 마우스 호버시, 커서 none 원 보임
-    shape.addEventListener("mouseenter", function() {
-      customCursor.style.display = "block";
-      document.body.style.cursor = "none"; // 기본 커서 숨김
+    $container.append(confetti);
+
+    setTimeout(() => {
+      confetti.remove();
+    }, 4000);
+  }
+
+  $('#j-content').hover(function () {
+    const $container = $(this);
+    // 컨페티 여러 개 떨어뜨리기
+    const interval = setInterval(() => {
+      createConfettiIn($container);
+    }, 100);
+
+    // 마우스 떠나면 멈추기
+    $container.data('confettiInterval', interval);
+  }, function () {
+    clearInterval($(this).data('confettiInterval'));
+  });
+
+    // 호버
+    const image = document.getElementById('hover-image');
+
+    image.addEventListener('mouseenter', () => {
+      image.src = '!.png'; // 마우스를 올리면 !.png로 변경
     });
 
-    // 도형에서 마우스가 미호버시, 원 안보임 커서 표시
-    shape.addEventListener("mouseleave", function() {
-      customCursor.style.display = "none";
-      document.body.style.cursor = "default";
+    image.addEventListener('mouseleave', () => {
+      image.src = 'hmm.png'; // 마우스가 나가면 ?.png로 복원
     });
-  </script>
+    img.addEventListener('mouseenter', () => {
+      bubble.style.opacity = '1';
+    });
+
+    img.addEventListener('mouseleave', () => {
+      bubble.style.opacity = '0';
+    });
+    
+    //알림
+class XAlert extends HTMLElement {
+  connectedCallback() {
+    /* ---------- ① 속성 파싱 ---------- */
+    const type      = this.getAttribute('type') || 'info';
+    const autoClose = parseInt(this.getAttribute('auto-close'), 10);
+
+    /* ---------- ② 스타일 정의 ---------- */
+    const bg = {info:'#dbeafe',success:'#d1fae5',warning:'#fef3c7',error:'#fee2e2'}[type];
+    const fg = {info:'#2563eb',success:'#15803d',warning:'#b45309',error:'#dc2626'}[type];
+
+    this.innerHTML = `
+      <style>
+        :host{
+          display:block; max-width:420px; margin:16px auto; padding:16px 48px 16px 20px;
+          background:${bg}; color:${fg}; border-radius:8px; font:500 16px/1.5 sans-serif;
+          position:relative; box-shadow:0 4px 10px rgba(0,0,0,.12);
+          opacity:0; transform:translateY(-6px); animation:fadeIn .4s forwards;
+        }
+        @keyframes fadeIn{to{opacity:1;transform:none}}
+        @keyframes fadeOut{to{opacity:0;transform:translateY(-6px)}}
+
+        :host(:hover){animation:none; transform:translateY(-2px) rotate(-1deg);}
+        button.close{
+          position:absolute; top:8px; right:8px; width:24px; height:24px;
+          border:none; background:transparent; color:${fg}; font-size:20px; cursor:pointer;
+        }
+      </style>
+      <slot></slot>
+      <button class="close" aria-label="close">&times;</button>
+    `;
+
+    /* ---------- ③ 닫기 로직 ---------- */
+    const close = () => {
+      this.style.animation = 'fadeOut .3s forwards';
+      setTimeout(() => this.remove(), 300);
+    };
+    this.querySelector('.close').addEventListener('click', close);
+
+    /* ---------- ④ auto‑close (선택) ---------- */
+    if (!isNaN(autoClose) && autoClose > 0) {
+      this._timer = setTimeout(close, autoClose * 1000);
+      /* 마우스 올리면 타이머 일시정지, 떠나면 재개 */
+      this.addEventListener('mouseenter', () => clearTimeout(this._timer));
+      this.addEventListener('mouseleave', () => {
+        this._timer = setTimeout(close, autoClose * 1000);
+      });
+    }
+  }
+}
+customElements.define('x-alert', XAlert);
+
+//토글 
+function toggleSize(element) {
+    element.classList.toggle("large");
+  }
+</script>
 
 </body>
 </html>
